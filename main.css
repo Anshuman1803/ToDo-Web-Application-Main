@@ -93,12 +93,13 @@ header {
     position: relative;
     overflow-y: auto;
 }
-.CardCountBox{
+
+.CardCountBox {
     background-color: #273b3b;
     position: fixed;
     top: 70px;
     left: 0px;
-    width:100px;
+    width: 100px;
     height: 100px;
     display: flex;
     align-items: center;
@@ -111,10 +112,12 @@ header {
     font-weight: 700;
 
 }
-#CardCount{
+
+#CardCount {
     font-family: 'Bungee Spice', cursive;
     font-size: 18px;
 }
+
 #DefaultText {
     font-family: 'Bungee Spice', cursive;
     font-size: 40px;
@@ -131,19 +134,38 @@ header {
     background-color: rgba(255, 255, 255, 0.37);
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+    animation: TaskCreated 1.2s ease-in;
+    transform: scale(1);
+    opacity: 1;
+}
+
+@keyframes TaskCreated {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+
 }
 
 .DeletedCard {
     opacity: 0;
+    transform: scale(0);
     animation: TaskDeleted 1.2s ease-in;
 }
 
 @keyframes TaskDeleted {
     from {
+        transform: scale(1);
         opacity: 1;
     }
 
     to {
+        transform: scale(0);
         opacity: 0;
     }
 
@@ -182,14 +204,23 @@ header {
 }
 
 .subTaskCompleted {
-    width: 100%;
     position: relative;
+    justify-content: center;
+}
+
+.subTaskCompleted::before {
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    content: 'COMPLETED';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 99, 71, 0.7);
     animation: SubTaskCompleted 1.2s ease-in;
-    text-decoration: line-through;
-    text-align: center;
-    /* background-color: rgba(255, 99, 71, 0.638); */
-    /* justify-content: center; */
-    /* color: white; */
 }
 
 
