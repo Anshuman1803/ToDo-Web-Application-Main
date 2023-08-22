@@ -1,0 +1,430 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: linear-gradient(to right, #383226, #273b3b);
+    background-size: cover;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.FlexContainer {
+    display: flex;
+    align-items: center;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #3E5151;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #DECBA4;
+}
+
+.AppContainer {
+    width: 100%;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    height: 70px;
+    width: 100%;
+    justify-content: space-between;
+    padding: 1em 3em;
+    background-color: #434343;
+    font-family: 'Bungee Spice', cursive;
+
+}
+
+
+#BackButton {
+    background-color: transparent;
+    border: none;
+    font-size: 30px;
+    font-weight: bolder;
+    color: white;
+    cursor: pointer;
+}
+
+.AppLogo {
+    gap: 10px;
+}
+
+.AppLogo img {
+    width: 30px;
+}
+
+.AppLogo h1 {
+    color: white;
+    font-size: 30px;
+}
+
+#addItemPopupBtn {
+    border: none;
+    justify-content: center;
+    background-color: transparent;
+    font-size: 30px;
+    color: white;
+    gap: 10px;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+#TaskCardContainer {
+    width: 100%;
+    padding: 3em;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    position: relative;
+    overflow-y: auto;
+}
+.CardCountBox{
+    background-color: #273b3b;
+    position: fixed;
+    top: 70px;
+    left: 0px;
+    width:100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    color: white;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    font-weight: 700;
+
+}
+#CardCount{
+    font-family: 'Bungee Spice', cursive;
+    font-size: 18px;
+}
+#DefaultText {
+    font-family: 'Bungee Spice', cursive;
+    font-size: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+
+.TaskCard {
+    border: none;
+    height: 450px;
+    width: 300px;
+    background-color: rgba(255, 255, 255, 0.37);
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+}
+
+.DeletedCard {
+    opacity: 0;
+    animation: TaskDeleted 1.2s ease-in;
+}
+
+@keyframes TaskDeleted {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+
+}
+
+.TaskHeading {
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.568);
+    color: white;
+    font-weight: normal;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.SubTaskContainer {
+    height: 350px;
+    padding: 0.5em;
+    overflow-y: auto;
+}
+
+.subTask {
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 2em 0.5em 0.5em;
+    display: flex;
+    align-items: center;
+    background-color: #28a746a8;
+    position: relative;
+    color: white;
+    font-weight: 400;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.subTaskCompleted {
+    width: 100%;
+    position: relative;
+    animation: SubTaskCompleted 1.2s ease-in;
+    text-decoration: line-through;
+    text-align: center;
+    /* background-color: rgba(255, 99, 71, 0.638); */
+    /* justify-content: center; */
+    /* color: white; */
+}
+
+
+@keyframes SubTaskCompleted {
+
+    from {
+        width: 0%;
+        opacity: 0;
+    }
+
+    to {
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+.subTaskCompleted .subTaskMarkDoneBtn {
+    display: none;
+}
+
+.subTaskMarkDoneBtn {
+    border: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    height: 100%;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: #28a745;
+    font-weight: bold;
+}
+
+.subTaskMarkDoneBtn:hover {
+    cursor: pointer;
+    background-color: rgb(243, 243, 243);
+}
+
+.ButtonContainer {
+    height: 50px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.cardCommonBtn {
+    font-size: 20px;
+    width: 50px;
+    height: 100%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.5s ease-in;
+
+}
+
+.deleteTaskCardBtn {
+    background-color: tomato;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 20px;
+}
+
+.deleteTaskCardBtn:hover {
+    cursor: pointer;
+    background-color: white;
+    color: tomato;
+}
+
+.AddSubTaskPopupBtn {
+    background-color: #28a745;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 20px;
+}
+
+.AddSubTaskPopupBtn:hover {
+    cursor: pointer;
+    background-color: white;
+    color: #28a745;
+}
+
+
+#AddItemPopup,
+#AddSubTaskPopup {
+    background-color: white;
+    width: 550px;
+    height: 300px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    padding-bottom: 2em;
+    z-index: 5;
+    transition: all 1s ease-in;
+    animation: PopupAnimation 0.9s ease-in;
+}
+
+@keyframes PopupAnimation {
+    from {
+        top: 100%;
+        opacity: 0;
+
+    }
+
+    to {
+        top: 50%;
+        opacity: 1;
+
+    }
+
+}
+
+.UnactivePopup {
+    display: none;
+}
+
+.ActivePopup {
+    display: flex;
+}
+
+.TaskPopupHeading {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.26);
+    width: 100%;
+    position: relative;
+    top: -30px;
+    height: 60px;
+    justify-content: space-between;
+    padding: 1em 2em;
+    font-size: 20px;
+    color: tomato;
+}
+
+.ClosePopup {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.PopupInput {
+    border-radius: 5px;
+    border: 1px solid black;
+    width: 90%;
+    padding: 1em;
+    font-size: 18px;
+    color: orangered;
+    text-transform: capitalize;
+}
+
+.ErrorNotice {
+    border-color: tomato;
+}
+
+.PopupInput:focus {
+    outline: none;
+
+}
+
+.PoupWindowButton {
+    width: 200px;
+    padding: 0.8em;
+    border: none;
+    background-color: #273b3b;
+    color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-weight: bolder;
+}
+
+.PoupWindowButton:hover {
+    cursor: pointer;
+    background-color: #4d6464;
+}
+
+#BlurBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    height: 100%;
+    backdrop-filter: blur(10px);
+    z-index: 4;
+    display: none;
+}
+
+@media screen and (max-width: 725px) {
+    header {
+        padding: 1em 0.5em;
+        justify-content: center;
+        gap: 160px;
+    }
+
+    .AppLogo {
+        display: none;
+    }
+
+
+    #TaskCardContainer {
+        justify-content: center;
+        padding: 2em 1em;
+    }
+
+    #DefaultText {
+        font-size: 20px;
+    }
+
+    #AddItemPopup,
+    #AddSubTaskPopup {
+        width: 95%;
+    }
+
+
+
+    .TaskPopupHeading {
+        padding: 1em;
+    }
+
+    .ClosePopup {
+        font-size: 25px;
+    }
+
+    .PopupInput {
+        width: 95%;
+    }
+
+}
