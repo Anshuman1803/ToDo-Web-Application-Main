@@ -134,7 +134,7 @@ header {
     background-color: rgba(255, 255, 255, 0.37);
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
-    animation: TaskCreated 1.2s ease-in;
+    animation: TaskCreated 0.6s ease-in;
     transform: scale(1);
     opacity: 1;
 }
@@ -192,10 +192,10 @@ header {
 .subTask {
     border: none;
     border-radius: 10px;
-    padding: 0.5em 2em 0.5em 0.5em;
+    padding: 0.6em 2em 0.6em 0.6em;
     display: flex;
     align-items: center;
-    background-color: #28a746a8;
+    background-color: rgba(255, 99, 71, 0.76);
     position: relative;
     color: white;
     font-weight: 400;
@@ -219,8 +219,47 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 99, 71, 0.7);
-    animation: SubTaskCompleted 1.2s ease-in;
+    background-color: #4bb543cd;
+    animation: SubTaskCompleted 1s ease-in;
+}
+.TaskCard:hover .CounterLabel{
+    display: flex;
+}
+.CounterLabel{
+    position: absolute;
+    top: 0px;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bolder;
+    color: white;
+    opacity: 1;
+    animation: CounterAnimation 0.3s ease-in;
+    display: none;
+}
+.PendingSUBTaskCounterLabel{
+    background-color: tomato;
+    border-top-left-radius: 10px;
+    left: 0;
+   
+}
+.CompletedSUBTaskCounterLabel{
+    background-color: #4BB543;
+    border-top-right-radius: 10px;
+    right: 0;
+}
+
+@keyframes CounterAnimation {
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+    
 }
 
 

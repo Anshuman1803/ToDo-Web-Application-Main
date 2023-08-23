@@ -15,7 +15,7 @@ const TaskCardContainer = document.getElementById("TaskCardContainer");
 const AppLogoBox = document.querySelector(".AppLogo");
 const BackButton = document.querySelector("#BackButton");
 const addPopupbtnText = document.querySelector(".addPopupbtnText");
-let currentClickdCard;
+
 
 let TaskCardCount = 0;
 let currentSubCardContainer;
@@ -53,13 +53,15 @@ function ShowHIdeDefaultMessage() {
 }
 
 
-// This block of code use to create the task list card
+// This block of code use to create the task card
 function createTaskCardList(TaskName) {
     ShowHIdeDefaultMessage();
 
     //!Creating Element for task card
     let divTaskCard = document.createElement("div");
     let h2TaskHeading = document.createElement('h2');
+    let spanPendingSUBTaskCounterLabel = document.createElement("span");
+    let spanCompletedSUBTaskCounterLabel = document.createElement("span");
     let divSubTaskContainer = document.createElement("div");
     let divButtonContainer = document.createElement("div");
     let iDeleteTaskCardButton = document.createElement("i");
@@ -68,6 +70,8 @@ function createTaskCardList(TaskName) {
     //! Adding the predefined class for styling
     divTaskCard.classList.add("TaskCard");
     h2TaskHeading.classList.add("TaskHeading");
+    spanCompletedSUBTaskCounterLabel.classList.add("CompletedSUBTaskCounterLabel", "CounterLabel");
+    spanPendingSUBTaskCounterLabel.classList.add("PendingSUBTaskCounterLabel", "CounterLabel");
     divSubTaskContainer.classList.add("SubTaskContainer");
     divButtonContainer.classList.add("ButtonContainer");
     iDeleteTaskCardButton.classList.add("fa-solid", "fa-trash", "deleteTaskCardBtn", "cardCommonBtn");
@@ -75,6 +79,8 @@ function createTaskCardList(TaskName) {
 
     //!Adding values to the element
     h2TaskHeading.innerText = TaskName;
+    spanPendingSUBTaskCounterLabel.innerText = 0;
+    spanCompletedSUBTaskCounterLabel.innerText = 0;
 
 
 
@@ -94,7 +100,6 @@ function createTaskCardList(TaskName) {
 
     iAddSubTaskPopupBtn.addEventListener("click", (e) => {
         currentSubCardContainer = (e.target.parentNode).previousSibling;
-
         AddSubTaskPopupWindow.classList.remove("UnactivePopup");
         AddSubTaskPopupWindow.classList.add("ActivePopup");
         BlurBg.style.display = "block";
@@ -104,6 +109,8 @@ function createTaskCardList(TaskName) {
 
     //! Appending Child to parent and Parent to grandparent
     divTaskCard.appendChild(h2TaskHeading);
+    divTaskCard.appendChild(spanPendingSUBTaskCounterLabel);
+    divTaskCard.appendChild(spanCompletedSUBTaskCounterLabel);
     divTaskCard.appendChild(divSubTaskContainer);
     divButtonContainer.appendChild(iDeleteTaskCardButton);
     divButtonContainer.appendChild(iAddSubTaskPopupBtn);
@@ -148,6 +155,12 @@ function createSubTaskList(SubTaskName) {
     sSubTaskMarkDoneBtn.addEventListener("click", (e) => {
         let parentSubTask = (e.target.parentNode);
         parentSubTask.classList.add("subTaskCompleted");
+
+        //THis code increase the complete task Counter
+        (parentSubTask.parentNode.previousSibling).innerText = Number((parentSubTask.parentNode.previousSibling).innerText) + 1;
+
+        //THis code decrease the pending task Counter
+        (parentSubTask.parentNode.previousSibling).previousSibling.innerText = Number(((parentSubTask.parentNode.previousSibling).previousSibling.innerText - 1));
     })
 
     //!appending child to parent and grand parent
@@ -155,6 +168,7 @@ function createSubTaskList(SubTaskName) {
 
     //This line of code add the sub task into current click task card
     currentSubCardContainer.appendChild(psubTask);
+    (currentSubCardContainer.previousSibling).previousSibling.innerText = Number((currentSubCardContainer.previousSibling).previousSibling.innerText) + 1;
 
 }
 
