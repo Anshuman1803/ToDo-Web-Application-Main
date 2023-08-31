@@ -128,6 +128,9 @@ AddNewTaskBtn.addEventListener('click', (e) => {
         let TaskName = TaskListNameInput.value;
         TaskListNameInput.classList.remove("ErrorNotice");
         createTaskCardList(TaskName);
+        AddItemPopupWindow.classList.remove("ActivePopup");
+        AddItemPopupWindow.classList.add("UnactivePopup");
+        BlurBg.style.display = "none";
         TaskListNameInput.value = "";
         TaskListNameInput.focus();
 
@@ -180,6 +183,9 @@ AddNewSubTaskBtn.addEventListener('click', (e) => {
         let subTaskName = subTaskNameInput.value;
         subTaskNameInput.classList.remove("ErrorNotice");
         createSubTaskList(subTaskName);
+        AddSubTaskPopupWindow.classList.remove("ActivePopup");
+        AddSubTaskPopupWindow.classList.add("UnactivePopup");
+        BlurBg.style.display = "none";
         subTaskNameInput.value = "";
         subTaskNameInput.focus();
 

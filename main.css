@@ -119,6 +119,8 @@ header {
 }
 
 #DefaultText {
+    width: 100%;
+    text-align: center;
     font-family: 'Bungee Spice', cursive;
     font-size: 40px;
     position: absolute;
@@ -201,7 +203,21 @@ header {
     font-weight: 400;
     margin-top: 10px;
     width: 100%;
+    animation: NewTask 1s ease-in;
 }
+@keyframes NewTask {
+    from{
+        transform: scale(0);
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+}
+
+
 
 .subTaskCompleted {
     position: relative;
@@ -225,6 +241,7 @@ header {
 .TaskCard:hover .CounterLabel{
     display: flex;
 }
+
 .CounterLabel{
     position: absolute;
     top: 0px;
@@ -240,6 +257,7 @@ header {
     animation: CounterAnimation 0.3s ease-in;
     display: none;
 }
+
 .PendingSUBTaskCounterLabel{
     background-color: tomato;
     border-top-left-radius: 10px;
@@ -348,8 +366,7 @@ header {
 }
 
 
-#AddItemPopup,
-#AddSubTaskPopup {
+.PopupWindows {
     background-color: white;
     width: 550px;
     height: 300px;
@@ -439,6 +456,12 @@ header {
     font-weight: bolder;
 }
 
+.Confirmation_Text{
+    text-align: center;
+    font-size: 25px;
+    width: 90%;
+}
+
 .PoupWindowButton:hover {
     cursor: pointer;
     background-color: #4d6464;
@@ -478,8 +501,7 @@ header {
         font-size: 20px;
     }
 
-    #AddItemPopup,
-    #AddSubTaskPopup {
+    .PopupWindows {
         width: 95%;
     }
 
@@ -495,6 +517,9 @@ header {
 
     .PopupInput {
         width: 95%;
+    }
+    .Confirmation_Text{
+        font-size: 18px;
     }
 
 }
