@@ -22,14 +22,14 @@ let TaskCardCount = 0;
 let currentSubCardContainer;
 
 // This block of code display the informatinMessageBox with some informatin text
-function showInformationBox(Message){
+function showInformationBox(Message) {
     InformationMessage.innerText = Message;
     InformationMessageBox.classList.add("ActiveInformationMessageBox");
 }
 
 // This block of code hide the informatinMessageBox 
-function HideInformationBox(){
-        InformationMessageBox.classList.remove("ActiveInformationMessageBox");
+function HideInformationBox() {
+    InformationMessageBox.classList.remove("ActiveInformationMessageBox");
 }
 
 // This  block of code use to close the PopupWindow
@@ -64,7 +64,7 @@ function ShowHIdeDefaultMessage() {
     }
 }
 
-
+//*************************************** Task Card functinality Start *****************************************
 // This block of code use to create the task card
 function createTaskCardList(TaskName) {
     ShowHIdeDefaultMessage();
@@ -133,7 +133,8 @@ function createTaskCardList(TaskName) {
     TaskCardContainer.appendChild(divTaskCard);
 }
 
-AddNewTaskBtn.addEventListener('click', (e) => {
+// validate and then call the createTaskCardList function 
+function addNewTaskValidation(){
     if (TaskListNameInput.value == "") {
         TaskListNameInput.classList.add("ErrorNotice");
         TaskListNameInput.focus();
@@ -144,18 +145,24 @@ AddNewTaskBtn.addEventListener('click', (e) => {
         createTaskCardList(TaskName);
         showInformationBox("Task created Successfully.")
         setTimeout(HideInformationBox, 2000);
-
         AddItemPopupWindow.classList.remove("ActivePopup");
         AddItemPopupWindow.classList.add("UnactivePopup");
         BlurBg.style.display = "none";
         TaskListNameInput.value = "";
         TaskListNameInput.focus();
     }
+}
+AddNewTaskBtn.addEventListener('click', addNewTaskValidation);
+
+TaskListNameInput.addEventListener('keypress', (e) => {
+    if (e.key === "Enter") {
+        addNewTaskValidation();
+    }
 })
+//*************************************** Task Card functinality End *****************************************
 
 
-
-
+//*************************************** sub task functinality start *****************************************
 // This block of code use to create the sub task inside the task list card
 function createSubTaskList(SubTaskName) {
     let psubTask = document.createElement("p");
@@ -190,8 +197,8 @@ function createSubTaskList(SubTaskName) {
     (currentSubCardContainer.previousSibling).previousSibling.innerText = Number((currentSubCardContainer.previousSibling).previousSibling.innerText) + 1;
 
 }
-
-AddNewSubTaskBtn.addEventListener('click', (e) => {
+// validate and then call the createSubTaskList function 
+function AddNewSubTaskValidation(){
     if (subTaskNameInput.value == "") {
         subTaskNameInput.classList.add("ErrorNotice");
         subTaskNameInput.focus();
@@ -206,7 +213,13 @@ AddNewSubTaskBtn.addEventListener('click', (e) => {
         setTimeout(HideInformationBox, 2000);
         subTaskNameInput.value = "";
         subTaskNameInput.focus();
-
     }
+}
+AddNewSubTaskBtn.addEventListener('click', AddNewSubTaskValidation)
 
+subTaskNameInput.addEventListener('keypress', (e) => {
+    if (e.key === "Enter") {
+        AddNewSubTaskValidation();
+    }
 })
+//*************************************** sub task functinality End *****************************************
