@@ -20,28 +20,25 @@ const addPopupbtnText = document.querySelector(".addPopupbtnText");
 
 let TaskCardCount = 0;
 let currentSubCardContainer;
-let saveSubTaskArray = [];
-let currentTaskName;
+let CurrentTaskCard;
 let isTaskCompleted = false;
 
 
 //***********Function for adding local storage Facility***********/
 function saveUserData(saveTaskName, saveSubTaskName) {
     if (localStorage.getItem(saveTaskName) === null) {
-        saveSubTaskArray = [];
-        saveSubTaskArray.push(saveSubTaskName);
-        localStorage.setItem(saveTaskName, saveSubTaskArray)
+
+        localStorage.setItem(saveTaskName, saveSubTaskName)
     } else {
-        saveSubTaskArray.push(saveSubTaskName);
-        localStorage.setItem(saveTaskName, saveSubTaskArray)
+        localStorage.setItem(saveTaskName, saveSubTaskName)
     }
 }
 
 
 //***********Function for deleting current task from local storage***********/
 
-function deleteUserData(currentTaskName) {
-    localStorage.removeItem(currentTaskName);
+function deleteUserData(CurrentTaskCard) {
+    localStorage.removeItem(CurrentTaskCard);
 }
 
 
@@ -141,7 +138,7 @@ function createTaskCardList(TaskName) {
 
     iAddSubTaskPopupBtn.addEventListener("click", (e) => {
         currentSubCardContainer = (e.target.parentNode).previousSibling;
-        currentTaskName = currentSubCardContainer.parentNode.firstChild.innerText;
+        CurrentTaskCard = currentSubCardContainer.parentNode.firstChild;
         AddSubTaskPopupWindow.classList.remove("UnactivePopup");
         AddSubTaskPopupWindow.classList.add("ActivePopup");
         BlurBg.style.display = "block";
@@ -208,8 +205,13 @@ function createSubTaskList(SubTaskName) {
     sSubTaskMarkDoneBtn.addEventListener("click", (e) => {
         let parentSubTask = (e.target.parentNode);
         parentSubTask.classList.add("subTaskCompleted");
+        let currentGrandParent = parentSubTask.parentNode.parentNode
         showInformationBox("Task Completed Successfully.")
         setTimeout(HideInformationBox, 2000);
+
+        //! Saving task Name and subtask name on locak storage
+        saveUserData(currentGrandParent.firstElementChild.innerText, currentGrandParent.innerHTML);
+
         //THis code increase the complete task Counter
         (parentSubTask.parentNode.previousSibling).innerText = Number((parentSubTask.parentNode.previousSibling).innerText) + 1;
 
@@ -241,7 +243,7 @@ function AddNewSubTaskValidation() {
         setTimeout(HideInformationBox, 2000);
 
         //! Saving task Name and subtask name on locak storage
-        saveUserData(currentTaskName, subTaskName);
+        saveUserData(CurrentTaskCard.innerText, (CurrentTaskCard.parentNode).innerHTML);
         subTaskNameInput.value = "";
         subTaskNameInput.focus();
     }
@@ -256,78 +258,43 @@ subTaskNameInput.addEventListener('keypress', (e) => {
 //*************************************** sub task functinality End *****************************************
 
 
-//! Load the Old task and it's sub task.
+//*************************************** Local Storage loading previous tasks *****************************************
+
+let deleteTaskCardBtn = document.querySelectorAll(".deleteTaskCardBtn");
+let AddSubTaskPopupBtn = document.querySelectorAll(".AddSubTaskPopupBtn");
+
+// //! Load the Old task and it's sub task.
 (function loadData() {
     for (let i = 0; i < localStorage.length; i++) {
         TaskCardCount++;
         ShowHIdeDefaultMessage();
-        let localSubtask = (localStorage.getItem(localStorage.key(i))).split(",");
         let divTaskCard = document.createElement("div");
-        let h2TaskHeading = document.createElement('h2');
-        let spanPendingSUBTaskCounterLabel = document.createElement("span");
-        let spanCompletedSUBTaskCounterLabel = document.createElement("span");
-        let divSubTaskContainer = document.createElement("div");
-        let divButtonContainer = document.createElement("div");
-        let iDeleteTaskCardButton = document.createElement("i");
-        let iAddSubTaskPopupBtn = document.createElement("i");
-
-        for (let j = 0; j < localSubtask.length; j++) {
-            spanPendingSUBTaskCounterLabel.innerText = localSubtask.length;
-            spanCompletedSUBTaskCounterLabel.innerText = 0
-            let psubTask = document.createElement("p");
-            let sSubTaskMarkDoneBtn = document.createElement("span");
+        divTaskCard.classList.add("TaskCard");
+        divTaskCard.innerHTML = localStorage.getItem(localStorage.key(i));
 
 
-            //! giving values to the elements
-            h2TaskHeading.innerText = localStorage.key(i);
-            sSubTaskMarkDoneBtn.innerText = "DONE";
-            psubTask.innerText = localSubtask[j];
+        // console.log(divTaskCard.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.children[0].firstElementChild);
 
-            saveSubTaskArray.push(localSubtask[j])
-
-            //! Adding the predefined class for styling
-            divTaskCard.classList.add("TaskCard");
-            h2TaskHeading.classList.add("TaskHeading");
-            spanCompletedSUBTaskCounterLabel.classList.add("CompletedSUBTaskCounterLabel", "CounterLabel");
-            spanPendingSUBTaskCounterLabel.classList.add("PendingSUBTaskCounterLabel", "CounterLabel");
-            divSubTaskContainer.classList.add("SubTaskContainer");
-            divButtonContainer.classList.add("ButtonContainer");
-            iDeleteTaskCardButton.classList.add("fa-solid", "fa-trash", "deleteTaskCardBtn", "cardCommonBtn");
-            iAddSubTaskPopupBtn.classList.add("fa-solid", "fa-circle-plus", "AddSubTaskPopupBtn", "cardCommonBtn")
-            psubTask.classList.add("subTask")
-            sSubTaskMarkDoneBtn.classList.add("subTaskMarkDoneBtn")
-
-
-            //! Appending elemets  to it's relative parenet
-            divTaskCard.appendChild(h2TaskHeading);
-            divTaskCard.appendChild(spanPendingSUBTaskCounterLabel);
-            divTaskCard.appendChild(spanCompletedSUBTaskCounterLabel);
-            divTaskCard.appendChild(divSubTaskContainer);
-            psubTask.appendChild(sSubTaskMarkDoneBtn);
-            divSubTaskContainer.appendChild(psubTask);
-            divButtonContainer.appendChild(iDeleteTaskCardButton);
-            divButtonContainer.appendChild(iAddSubTaskPopupBtn);
-            divTaskCard.appendChild(divButtonContainer);
-            TaskCardContainer.appendChild(divTaskCard);
-
-
-
-            //! Adding event Listeners
-            sSubTaskMarkDoneBtn.addEventListener("click", (e) => {
+        Array.from(divTaskCard.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.children).forEach((children) => {
+            children.firstElementChild.addEventListener('click', (e) => {
                 let parentSubTask = (e.target.parentNode);
                 parentSubTask.classList.add("subTaskCompleted");
+                let currentGrandParent = parentSubTask.parentNode.parentNode
                 showInformationBox("Task Completed Successfully.")
                 setTimeout(HideInformationBox, 2000);
+
+                //! Saving task Name and subtask name on locak storage
+                saveUserData(currentGrandParent.firstElementChild.innerText, currentGrandParent.innerHTML);
+
                 //THis code increase the complete task Counter
                 (parentSubTask.parentNode.previousSibling).innerText = Number((parentSubTask.parentNode.previousSibling).innerText) + 1;
 
                 //THis code decrease the pending task Counter
                 (parentSubTask.parentNode.previousSibling).previousSibling.innerText = Number(((parentSubTask.parentNode.previousSibling).previousSibling.innerText - 1));
             })
-        }
+        })
 
-        //! Adding event Listeners
-        iDeleteTaskCardButton.addEventListener("click", (e) => {
+        divTaskCard.lastElementChild.firstElementChild.addEventListener('click', (e) => {
             //*this line of code give the grand parent of the clickd button.
             let Parent = (e.target.parentNode).parentNode;
             Parent.classList.add("DeletedCard");
@@ -340,20 +307,19 @@ subTaskNameInput.addEventListener('keypress', (e) => {
             // this line of code decrease the count of taskcard and then call the function for showing or hiding the default message
             TaskCardCount--;
             ShowHIdeDefaultMessage();
-
         })
 
-        iAddSubTaskPopupBtn.addEventListener("click", (e) => {
+        divTaskCard.lastElementChild.lastElementChild.addEventListener('click', (e) => {
+
             currentSubCardContainer = (e.target.parentNode).previousSibling;
-            currentTaskName = currentSubCardContainer.parentNode.firstChild.innerText;
+            CurrentTaskCard = currentSubCardContainer.parentNode.firstChild;
             AddSubTaskPopupWindow.classList.remove("UnactivePopup");
             AddSubTaskPopupWindow.classList.add("ActivePopup");
             BlurBg.style.display = "block";
             subTaskNameInput.focus();
         })
 
-
+        TaskCardContainer.appendChild(divTaskCard);
     }
-
 }());
 
