@@ -154,7 +154,7 @@ function createTaskCardList(TaskName) {
     divButtonContainer.appendChild(iDeleteTaskCardButton);
     divButtonContainer.appendChild(iAddSubTaskPopupBtn);
     divTaskCard.appendChild(divButtonContainer);
-
+    saveUserData(TaskName,divTaskCard.innerHTML);
     TaskCardContainer.appendChild(divTaskCard);
 }
 
@@ -272,8 +272,6 @@ let AddSubTaskPopupBtn = document.querySelectorAll(".AddSubTaskPopupBtn");
         divTaskCard.classList.add("TaskCard");
         divTaskCard.innerHTML = localStorage.getItem(localStorage.key(i));
 
-
-        // console.log(divTaskCard.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.children[0].firstElementChild);
 
         Array.from(divTaskCard.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.children).forEach((children) => {
             children.firstElementChild.addEventListener('click', (e) => {
