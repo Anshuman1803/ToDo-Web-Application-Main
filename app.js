@@ -20,6 +20,32 @@ const addPopupbtnText = document.querySelector(".addPopupbtnText");
 
 let TaskCardCount = 0;
 let currentSubCardContainer;
+let saveSubTaskArray = [];
+let currentTaskName;
+let isTaskCompleted = false;
+
+
+//***********Function for adding local storage Facility***********/
+function saveUserData(saveTaskName, saveSubTaskName) {
+    if (localStorage.getItem(saveTaskName) === null) {
+        saveSubTaskArray = [];
+        saveSubTaskArray.push(saveSubTaskName);
+        localStorage.setItem(saveTaskName, saveSubTaskArray)
+    } else {
+        saveSubTaskArray.push(saveSubTaskName);
+        localStorage.setItem(saveTaskName, saveSubTaskArray)
+    }
+}
+
+
+//***********Function for deleting current task from local storage***********/
+
+function deleteUserData(currentTaskName) {
+    localStorage.removeItem(currentTaskName);
+}
+
+
+
 
 // This block of code display the informatinMessageBox with some informatin text
 function showInformationBox(Message) {
@@ -106,6 +132,7 @@ function createTaskCardList(TaskName) {
         }, 1200);
         showInformationBox("Task Deleted Successfully.");
         setTimeout(HideInformationBox, 2000);
+        deleteUserData(Parent.firstChild.innerText);
         // this line of code decrease the count of taskcard and then call the function for showing or hiding the default message
         TaskCardCount--;
         ShowHIdeDefaultMessage();
@@ -114,6 +141,7 @@ function createTaskCardList(TaskName) {
 
     iAddSubTaskPopupBtn.addEventListener("click", (e) => {
         currentSubCardContainer = (e.target.parentNode).previousSibling;
+        currentTaskName = currentSubCardContainer.parentNode.firstChild.innerText;
         AddSubTaskPopupWindow.classList.remove("UnactivePopup");
         AddSubTaskPopupWindow.classList.add("ActivePopup");
         BlurBg.style.display = "block";
@@ -134,7 +162,7 @@ function createTaskCardList(TaskName) {
 }
 
 // validate and then call the createTaskCardList function 
-function addNewTaskValidation(){
+function addNewTaskValidation() {
     if (TaskListNameInput.value == "") {
         TaskListNameInput.classList.add("ErrorNotice");
         TaskListNameInput.focus();
@@ -198,7 +226,7 @@ function createSubTaskList(SubTaskName) {
 
 }
 // validate and then call the createSubTaskList function 
-function AddNewSubTaskValidation(){
+function AddNewSubTaskValidation() {
     if (subTaskNameInput.value == "") {
         subTaskNameInput.classList.add("ErrorNotice");
         subTaskNameInput.focus();
@@ -211,6 +239,9 @@ function AddNewSubTaskValidation(){
         BlurBg.style.display = "none";
         showInformationBox("Task Added Successfully.");
         setTimeout(HideInformationBox, 2000);
+
+        //! Saving task Name and subtask name on locak storage
+        saveUserData(currentTaskName, subTaskName);
         subTaskNameInput.value = "";
         subTaskNameInput.focus();
     }
@@ -221,5 +252,108 @@ subTaskNameInput.addEventListener('keypress', (e) => {
     if (e.key === "Enter") {
         AddNewSubTaskValidation();
     }
-})
+});
 //*************************************** sub task functinality End *****************************************
+
+
+//! Load the Old task and it's sub task.
+(function loadData() {
+    for (let i = 0; i < localStorage.length; i++) {
+        TaskCardCount++;
+        ShowHIdeDefaultMessage();
+        let localSubtask = (localStorage.getItem(localStorage.key(i))).split(",");
+        let divTaskCard = document.createElement("div");
+        let h2TaskHeading = document.createElement('h2');
+        let spanPendingSUBTaskCounterLabel = document.createElement("span");
+        let spanCompletedSUBTaskCounterLabel = document.createElement("span");
+        let divSubTaskContainer = document.createElement("div");
+        let divButtonContainer = document.createElement("div");
+        let iDeleteTaskCardButton = document.createElement("i");
+        let iAddSubTaskPopupBtn = document.createElement("i");
+
+        for (let j = 0; j < localSubtask.length; j++) {
+            spanPendingSUBTaskCounterLabel.innerText = localSubtask.length;
+            spanCompletedSUBTaskCounterLabel.innerText = 0
+            let psubTask = document.createElement("p");
+            let sSubTaskMarkDoneBtn = document.createElement("span");
+
+
+            //! giving values to the elements
+            h2TaskHeading.innerText = localStorage.key(i);
+            sSubTaskMarkDoneBtn.innerText = "DONE";
+            psubTask.innerText = localSubtask[j];
+
+            saveSubTaskArray.push(localSubtask[j])
+
+            //! Adding the predefined class for styling
+            divTaskCard.classList.add("TaskCard");
+            h2TaskHeading.classList.add("TaskHeading");
+            spanCompletedSUBTaskCounterLabel.classList.add("CompletedSUBTaskCounterLabel", "CounterLabel");
+            spanPendingSUBTaskCounterLabel.classList.add("PendingSUBTaskCounterLabel", "CounterLabel");
+            divSubTaskContainer.classList.add("SubTaskContainer");
+            divButtonContainer.classList.add("ButtonContainer");
+            iDeleteTaskCardButton.classList.add("fa-solid", "fa-trash", "deleteTaskCardBtn", "cardCommonBtn");
+            iAddSubTaskPopupBtn.classList.add("fa-solid", "fa-circle-plus", "AddSubTaskPopupBtn", "cardCommonBtn")
+            psubTask.classList.add("subTask")
+            sSubTaskMarkDoneBtn.classList.add("subTaskMarkDoneBtn")
+
+
+            //! Appending elemets  to it's relative parenet
+            divTaskCard.appendChild(h2TaskHeading);
+            divTaskCard.appendChild(spanPendingSUBTaskCounterLabel);
+            divTaskCard.appendChild(spanCompletedSUBTaskCounterLabel);
+            divTaskCard.appendChild(divSubTaskContainer);
+            psubTask.appendChild(sSubTaskMarkDoneBtn);
+            divSubTaskContainer.appendChild(psubTask);
+            divButtonContainer.appendChild(iDeleteTaskCardButton);
+            divButtonContainer.appendChild(iAddSubTaskPopupBtn);
+            divTaskCard.appendChild(divButtonContainer);
+            TaskCardContainer.appendChild(divTaskCard);
+
+
+
+            //! Adding event Listeners
+            sSubTaskMarkDoneBtn.addEventListener("click", (e) => {
+                let parentSubTask = (e.target.parentNode);
+                parentSubTask.classList.add("subTaskCompleted");
+                showInformationBox("Task Completed Successfully.")
+                setTimeout(HideInformationBox, 2000);
+                //THis code increase the complete task Counter
+                (parentSubTask.parentNode.previousSibling).innerText = Number((parentSubTask.parentNode.previousSibling).innerText) + 1;
+
+                //THis code decrease the pending task Counter
+                (parentSubTask.parentNode.previousSibling).previousSibling.innerText = Number(((parentSubTask.parentNode.previousSibling).previousSibling.innerText - 1));
+            })
+        }
+
+        //! Adding event Listeners
+        iDeleteTaskCardButton.addEventListener("click", (e) => {
+            //*this line of code give the grand parent of the clickd button.
+            let Parent = (e.target.parentNode).parentNode;
+            Parent.classList.add("DeletedCard");
+            setInterval(() => {
+                Parent.remove();
+            }, 1200);
+            showInformationBox("Task Deleted Successfully.");
+            setTimeout(HideInformationBox, 2000);
+            deleteUserData(Parent.firstChild.innerText);
+            // this line of code decrease the count of taskcard and then call the function for showing or hiding the default message
+            TaskCardCount--;
+            ShowHIdeDefaultMessage();
+
+        })
+
+        iAddSubTaskPopupBtn.addEventListener("click", (e) => {
+            currentSubCardContainer = (e.target.parentNode).previousSibling;
+            currentTaskName = currentSubCardContainer.parentNode.firstChild.innerText;
+            AddSubTaskPopupWindow.classList.remove("UnactivePopup");
+            AddSubTaskPopupWindow.classList.add("ActivePopup");
+            BlurBg.style.display = "block";
+            subTaskNameInput.focus();
+        })
+
+
+    }
+
+}());
+
