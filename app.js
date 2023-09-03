@@ -10,7 +10,8 @@ const subTaskNameInput = document.querySelector("#subTaskNameInput");
 const AddNewSubTaskBtn = document.querySelector("#AddNewSubTaskBtn");
 
 const TaskCardContainer = document.getElementById("TaskCardContainer");
-
+const InformationMessageBox = document.querySelector(".InformationMessageBox");
+const InformationMessage = document.querySelector("#InformationMessage");
 
 const AppLogoBox = document.querySelector(".AppLogo");
 const BackButton = document.querySelector("#BackButton");
@@ -19,6 +20,17 @@ const addPopupbtnText = document.querySelector(".addPopupbtnText");
 
 let TaskCardCount = 0;
 let currentSubCardContainer;
+
+// This block of code display the informatinMessageBox with some informatin text
+function showInformationBox(Message){
+    InformationMessage.innerText = Message;
+    InformationMessageBox.classList.add("ActiveInformationMessageBox");
+}
+
+// This block of code hide the informatinMessageBox 
+function HideInformationBox(){
+        InformationMessageBox.classList.remove("ActiveInformationMessageBox");
+}
 
 // This  block of code use to close the PopupWindow
 ClosePopupBtn.forEach((CloseButton) => {
@@ -92,6 +104,8 @@ function createTaskCardList(TaskName) {
         setInterval(() => {
             Parent.remove();
         }, 1200);
+        showInformationBox("Task Deleted Successfully.");
+        setTimeout(HideInformationBox, 2000);
         // this line of code decrease the count of taskcard and then call the function for showing or hiding the default message
         TaskCardCount--;
         ShowHIdeDefaultMessage();
@@ -128,14 +142,15 @@ AddNewTaskBtn.addEventListener('click', (e) => {
         let TaskName = TaskListNameInput.value;
         TaskListNameInput.classList.remove("ErrorNotice");
         createTaskCardList(TaskName);
+        showInformationBox("Task created Successfully.")
+        setTimeout(HideInformationBox, 2000);
+
         AddItemPopupWindow.classList.remove("ActivePopup");
         AddItemPopupWindow.classList.add("UnactivePopup");
         BlurBg.style.display = "none";
         TaskListNameInput.value = "";
         TaskListNameInput.focus();
-
     }
-
 })
 
 
@@ -158,7 +173,8 @@ function createSubTaskList(SubTaskName) {
     sSubTaskMarkDoneBtn.addEventListener("click", (e) => {
         let parentSubTask = (e.target.parentNode);
         parentSubTask.classList.add("subTaskCompleted");
-
+        showInformationBox("Task Completed Successfully.")
+        setTimeout(HideInformationBox, 2000);
         //THis code increase the complete task Counter
         (parentSubTask.parentNode.previousSibling).innerText = Number((parentSubTask.parentNode.previousSibling).innerText) + 1;
 
@@ -186,6 +202,8 @@ AddNewSubTaskBtn.addEventListener('click', (e) => {
         AddSubTaskPopupWindow.classList.remove("ActivePopup");
         AddSubTaskPopupWindow.classList.add("UnactivePopup");
         BlurBg.style.display = "none";
+        showInformationBox("Task Added Successfully.");
+        setTimeout(HideInformationBox, 2000);
         subTaskNameInput.value = "";
         subTaskNameInput.focus();
 
