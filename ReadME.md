@@ -1,3 +1,3 @@
 # Project - ToDO-Web Application
 
-![Design preview for the Weather And WeatherForeCast Web-Application](./ProjectImage.png.png)
+![Design preview for the ToDO-Web Application](ProjectImage.png.png)
