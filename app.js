@@ -23,6 +23,17 @@ let currentSubCardContainer;
 let CurrentTaskCard;
 let isTaskCompleted = false;
 
+//***********Function for adding Current date when user add SubTask List***********/
+function currentDate (){
+let newDate = new Date();
+let date = newDate.getDate()
+let month = newDate.getMonth();
+let year = newDate.getFullYear();
+
+let currentDate = `${date}-${month+1}-${year}`
+return currentDate
+}
+
 
 //***********Function for adding local storage Facility***********/
 function saveUserData(saveTaskName, saveSubTaskName) {
@@ -33,6 +44,7 @@ function saveUserData(saveTaskName, saveSubTaskName) {
         localStorage.setItem(saveTaskName, saveSubTaskName)
     }
 }
+
 
 
 //***********Function for deleting current task from local storage***********/
@@ -191,15 +203,18 @@ TaskListNameInput.addEventListener('keypress', (e) => {
 // This block of code use to create the sub task inside the task list card
 function createSubTaskList(SubTaskName) {
     let psubTask = document.createElement("p");
+    let timeStamp = document.createElement("span");
     let sSubTaskMarkDoneBtn = document.createElement("span");
 
     //adding predefined class to element for styling
     psubTask.classList.add("subTask")
+    timeStamp.classList.add("timeStamp")
     sSubTaskMarkDoneBtn.classList.add("subTaskMarkDoneBtn")
 
     //Giving values to element
     sSubTaskMarkDoneBtn.innerText = "DONE";
     psubTask.innerText = SubTaskName;
+    timeStamp.innerText = currentDate();
 
     //Add event listeners
     sSubTaskMarkDoneBtn.addEventListener("click", (e) => {
@@ -220,6 +235,7 @@ function createSubTaskList(SubTaskName) {
     })
 
     //!appending child to parent and grand parent
+    psubTask.appendChild(timeStamp)
     psubTask.appendChild(sSubTaskMarkDoneBtn);
 
     //This line of code add the sub task into current click task card
